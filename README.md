@@ -1,4 +1,4 @@
-# saathvik
+
 # 💫 About Me:
 ## Saathvik Medavarapu<br><br>Computer Science student focused on AI/ML and Backend Development<br><br>🔭 I’m currently working on  <br>- Strengthening DSA fundamentals  <br>- Improving problem-solving skills  <br><br>🤝 I’m looking to collaborate on  <br>- Beginner-friendly backend or AI/ML projects  <br>- Open-source projects where I can learn and contribute  <br><br>🫱🏽‍🫲🏼 I’m looking for help with  <br>- Real-world project building  <br>- Understanding backend architecture and ML basics  <br><br>🌱 I’m currently learning  <br>- Data Structures & Algorithms  <br>- Java and Python  <br>- Backend fundamentals  <br>- Basics of Machine Learning  <br><br>💬 Ask me about  <br>- DSA concepts  <br>- Beginner-level Java/Python  <br>- Getting started with problem solving  <br><br>⚡ Fun fact  <br>- I care more about understanding how things work than just making them work
 
