@@ -1,4 +1,3 @@
-cat > README.md <<'EOF'
 <div align="center">
 
 <h3>
@@ -45,13 +44,4 @@ cat > README.md <<'EOF'
 GitHub
 </a>
 &nbsp;•&nbsp;
-<a href="https://www.linkedin.com/in/medavarapu-saathvik-68a189381/">
-LinkedIn
-</a>
-&nbsp;•&nbsp;
-<a href="mailto:saathvikmedavarapu2111@gmail.com">
-Email
-</a>
-
-</div>
-EOF
+<a href="https:

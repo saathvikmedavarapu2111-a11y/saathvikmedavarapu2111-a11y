@@ -1,0 +1,24 @@
+{
+  "username": "saathvikmedavarapu2111-a11y",
+  "rows": [
+    ["host"],
+
+    ["kv", "Role", "CS Student"],
+    ["kv", "Focus", "AI/ML · Backend · DSA"],
+
+    ["gap"],
+
+    ["sec", "Stack"],
+    ["kv", "Languages", "Java · Python · JavaScript"],
+    ["kv", "Backend", "Spring Boot · FastAPI"],
+    ["kv", "Data", "PostgreSQL · pgvector"],
+    ["kv", "AI", "RAG · LLMs · Vector Search"],
+
+    ["gap"],
+
+    ["sec", "Currently"],
+    ["bul", "Learning Spring Boot"],
+    ["bul", "Building AI systems"],
+    ["bul", "Improving DSA"]
+  ]
+}
