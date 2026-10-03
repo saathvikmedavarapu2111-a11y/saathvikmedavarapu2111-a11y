@@ -1,6 +1,6 @@
 """
-Convert a portrait photo into a CLEAN, monochrome ASCII-art SVG (Andrew6rant
-style: one light-gray color, subject isolated on a dark background) that "types"
+Convert a portrait photo into a clean, monochrome ASCII-art SVG
+(one light-gray color, subject isolated on a dark background) that "types"
 itself in like a terminal, then holds.
 
 Monochrome is deliberate -- per-character rainbow color is what makes ASCII
@@ -22,7 +22,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # the background removed + local contrast applied.
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "source-prepped.png")
 OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "ascii-portrait.svg")
-USERNAME = os.environ.get("GH_PROFILE_USER", "AiyzoxX")
+TERMINAL_USER = os.environ.get("GH_TERMINAL_USER", "saathvik")
+DISPLAY_NAME = os.environ.get("GH_DISPLAY_NAME", "Medavarapu Saathvik")
 
 COLS = 100
 ROWS = 53
@@ -50,7 +51,7 @@ BG = "#0d1117"
 BG2 = "#111722"
 FRAME = "#30363d"
 TITLE_TEXT = "#7d8590"
-INK = "#c9d1d9"      # the single ascii color (matches Andrew6rant)
+INK = "#c9d1d9"      # the single ascii color
 CURSOR = "#c9d1d9"
 
 # ---- reveal timing (one-shot; a cursor rasters top -> bottom) -------------
@@ -103,9 +104,8 @@ parts.append(f'<rect x="0.5" y="0.5" width="{CANVAS_W-1}" height="{CANVAS_H-1}" 
 parts.append(f'<line x1="0" y1="{TITLEBAR_H}" x2="{CANVAS_W}" y2="{TITLEBAR_H}" stroke="{FRAME}"/>')
 for i, dotcol in enumerate(["#ff5f56", "#ffbd2e", "#27c93f"]):
     parts.append(f'<circle cx="{PAD + i*16}" cy="{TITLEBAR_H/2}" r="5" fill="{dotcol}"/>')
-user = USERNAME.lower()
 parts.append(f'<text x="{CANVAS_W/2}" y="{TITLEBAR_H/2 + 4}" fill="{TITLE_TEXT}" font-size="12" '
-             f'text-anchor="middle">{user}@github: ~$ ./portrait.sh</text>')
+             f'text-anchor="middle">{TERMINAL_USER}@github: ~$ ./portrait.sh</text>')
 
 # one <text> per row (single color -> no per-char markup, tiny file)
 font_size = CELL_H * 0.86
@@ -138,12 +138,12 @@ for ry, line in enumerate(rows_txt):
 # status bar with a steady blinking cursor
 status_line_y = TITLEBAR_H + ART_H + PAD * 0.35
 status_y = status_line_y + 19
-whoami_prompt = f"{user}@github:~$ whoami "
-whoami_full = f"{whoami_prompt}{USERNAME}"
-cursor_x = PAD + int(len(whoami_full) * 8.0)
+whoami_prompt = f"{TERMINAL_USER}@github:~$ whoami "
+whoami_full = f"{whoami_prompt}{DISPLAY_NAME}"
+cursor_x = PAD + int(len(whoami_full) * 7.8) + 4
 parts.append(f'<line x1="0" y1="{status_line_y:.1f}" x2="{CANVAS_W}" y2="{status_line_y:.1f}" stroke="{FRAME}"/>')
 parts.append(f'<text x="{PAD}" y="{status_y:.1f}" fill="{TITLE_TEXT}" font-size="13">'
-             f'{whoami_prompt}<tspan fill="{INK}">{USERNAME}</tspan></text>')
+             f'{whoami_prompt}<tspan fill="{INK}">{DISPLAY_NAME}</tspan></text>')
 parts.append(f'<rect x="{cursor_x}" y="{status_y-12:.1f}" width="8" height="14" fill="{INK}">'
              f'<animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.51;1" '
              f'dur="1s" repeatCount="indefinite"/></rect>')

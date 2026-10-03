@@ -42,6 +42,9 @@ ROW_T = 0.045   # per-row delay contribution (top -> bottom cascade)
 CELL_DUR = 0.42
 
 
+TERMINAL_USER = os.environ.get("GH_TERMINAL_USER", "saathvik")
+
+
 def level_for(count):
     if count == 0:
         return 0
@@ -80,6 +83,14 @@ def build_grid(days):
 def render(data):
     days = data["days"]
     grid = build_grid(days)
+
+    # Grid consistency validation
+    grid_cell_count = sum(cell[1] for col in grid for cell in col if cell is not None)
+    if grid_cell_count != data["total_contributions"]:
+        raise ValueError(
+            f"Grid sum ({grid_cell_count}) does not match data total_contributions ({data['total_contributions']})"
+        )
+
     n_cols = len(grid)
     art_w = n_cols * STEP
     art_h = 7 * STEP
@@ -122,11 +133,10 @@ def render(data):
         f'fill="none" stroke="{FRAME}" stroke-width="1" stroke-opacity="0.55"/>',
         f'<line x1="0" y1="{TITLEBAR_H}" x2="{canvas_w}" y2="{TITLEBAR_H}" stroke="{FRAME}" stroke-opacity="0.35"/>',
     ]
-    user = data.get("username", "user").lower()
     for i, dotcol in enumerate(["#ff5f56", "#ffbd2e", "#27c93f"]):
         parts.append(f'<circle cx="{PAD + i*16}" cy="{TITLEBAR_H/2}" r="5" fill="{dotcol}"/>')
     parts.append(f'<text x="{canvas_w/2}" y="{TITLEBAR_H/2 + 4}" fill="{MUTED}" font-size="12" '
-                 f'text-anchor="middle">{user}@github: ~/contributions --graph</text>')
+                 f'text-anchor="middle">{TERMINAL_USER}@github: ~/contributions --graph</text>')
 
     grid_top = TITLEBAR_H + TOP_LABEL_H
     grid_left = PAD + LEFT_LABEL_W

@@ -1,5 +1,5 @@
 """
-Build a neofetch-style info card SVG (Andrew6rant style) to sit to the RIGHT of
+Build a neofetch-style info card SVG to sit to the right of
 the ASCII portrait: colored key/value rows for work experience, tech stack, and
 highlights -- NOT GitHub stats (the contribution graph covers those).
 
@@ -17,7 +17,8 @@ OUT = os.path.join(HERE, "..", "info-card.svg")
 INFO_JSON = os.path.join(HERE, "..", "data", "profile_info.json")
 STATIC = bool(os.environ.get("STATIC"))
 
-USERNAME = os.environ.get("GH_PROFILE_USER", "AiyzoxX")
+TERMINAL_USER = os.environ.get("GH_TERMINAL_USER", "saathvik")
+DISPLAY_NAME = os.environ.get("GH_DISPLAY_NAME", "Medavarapu Saathvik")
 
 W, H = 490, 385
 PAD = 20
@@ -41,7 +42,8 @@ if os.path.exists(INFO_JSON):
     try:
         with open(INFO_JSON, "r", encoding="utf-8") as f:
             cfg = json.load(f)
-            USERNAME = cfg.get("username", USERNAME)
+            TERMINAL_USER = cfg.get("terminal_user", TERMINAL_USER)
+            DISPLAY_NAME = cfg.get("name", DISPLAY_NAME)
             ROWS = [tuple(r) for r in cfg.get("rows", [])]
     except Exception as e:
         print(f"Warning: could not read {INFO_JSON}: {e}")
@@ -49,21 +51,22 @@ if os.path.exists(INFO_JSON):
 if not ROWS:
     ROWS = [
         ("host",),
-        ("kv", "Role", "Vibe Coder"),
-        ("kv", "Focus", "Fullstack · AI · Systems"),
+        ("kv", "Role", "CS Student"),
+        ("kv", "Focus", "AI/ML · Backend · DSA"),
         ("gap",),
         ("sec", "Stack"),
-        ("kv", "Languages", "Python, TypeScript, JavaScript"),
-        ("kv", "Frontend", "React, Next.js, Tailwind CSS"),
-        ("kv", "Backend", "FastAPI, Node.js, Express"),
-        ("kv", "Tools", "Docker, Git, Linux, CI/CD"),
+        ("kv", "Languages", "Java · Python · JavaScript"),
+        ("kv", "Backend", "Spring Boot · FastAPI"),
+        ("kv", "Data", "PostgreSQL · pgvector"),
+        ("kv", "AI", "RAG · LLMs · Vector Search"),
         ("gap",),
-        ("sec", "Highlights"),
-        ("bul", "Open-source contributor & continuous learner"),
-        ("bul", "Building modern automated web apps"),
+        ("sec", "Currently"),
+        ("bul", "Learning Spring Boot"),
+        ("bul", "Building AI systems"),
+        ("bul", "Improving DSA"),
     ]
 
-USER = USERNAME.lower()
+USER = TERMINAL_USER.lower()
 
 
 def esc(s):

@@ -35,7 +35,7 @@ jobs:
 
       - name: Render contribution heatmap
         env:
-          GH_PROFILE_USER: saathvikmedavarapu2111-a11y
+          GH_TERMINAL_USER: saathvik
         run: |
           python scripts/render_heatmap_svg.py
 

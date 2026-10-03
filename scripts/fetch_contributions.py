@@ -17,13 +17,18 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 
-USERNAME = os.environ.get("GH_PROFILE_USER", "AiyzoxX")
+DEFAULT_USER = "saathvikmedavarapu2111-a11y"
+USERNAME = os.environ.get("GH_PROFILE_USER", DEFAULT_USER)
 URL = f"https://github.com/users/{USERNAME}/contributions"
 OUT_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "contributions.json")
 
 
 def fetch_days():
-    resp = requests.get(URL, headers={"User-Agent": "profile-readme-bot/1.0"}, timeout=30)
+    resp = requests.get(
+        URL,
+        headers={"User-Agent": "profile-readme-bot/1.0 (https://github.com/saathvikmedavarapu2111-a11y)"},
+        timeout=30,
+    )
     resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
 
@@ -31,6 +36,15 @@ def fetch_days():
     if not cells:
         print("no calendar cells found -- github markup may have changed", file=sys.stderr)
         sys.exit(1)
+
+    # Extract reported total from H2 for validation
+    h2_el = soup.find("h2")
+    h2_total = None
+    if h2_el:
+        h2_text = h2_el.get_text(" ", strip=True)
+        h2_match = re.search(r"([\d,]+)\s+contributions?\s+in\s+the\s+last\s+year", h2_text, re.I)
+        if h2_match:
+            h2_total = int(h2_match.group(1).replace(",", ""))
 
     days = []
     for td in cells:
@@ -40,15 +54,31 @@ def fetch_days():
         td_id = td.get("id")
         tooltip_el = soup.find("tool-tip", attrs={"for": td_id}) if td_id else None
         text = tooltip_el.get_text(strip=True) if tooltip_el else ""
+
         if re.search(r"no contributions", text, re.I):
             count = 0
         else:
-            m = re.match(r"(\d+)", text)
+            m = re.search(r"(\d+)\s+contribution", text, re.I)
+            if not m:
+                m = re.match(r"(\d+)", text)
             count = int(m.group(1)) if m else 0
         days.append({"date": date, "count": count})
 
     days.sort(key=lambda d: d["date"])
-    return days
+
+    # Validation
+    calc_total = sum(d["count"] for d in days)
+    if h2_total is not None and calc_total != h2_total:
+        print(
+            f"WARNING: Sum of parsed cells ({calc_total}) does not match GitHub H2 total ({h2_total})",
+            file=sys.stderr,
+        )
+
+    if not days:
+        print("ERROR: Parsed 0 contribution days", file=sys.stderr)
+        sys.exit(1)
+
+    return days, h2_total
 
 
 def compute_current_streak(days):
@@ -84,10 +114,10 @@ def compute_longest_streak(days):
     return longest, longest_start, longest_end
 
 
-def build_data(days):
+def build_data(days, h2_total=None):
     total = sum(d["count"] for d in days)
     active_days = sum(1 for d in days if d["count"] > 0)
-    best = max(days, key=lambda d: d["count"])
+    best = max(days, key=lambda d: d["count"]) if days else {"date": None, "count": 0}
     cur_len, cur_start, cur_end = compute_current_streak(days)
     long_len, long_start, long_end = compute_longest_streak(days)
 
@@ -113,11 +143,14 @@ def build_data(days):
 
 
 if __name__ == "__main__":
-    days = fetch_days()
-    data = build_data(days)
+    days, h2_total = fetch_days()
+    data = build_data(days, h2_total)
     os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
     with open(OUT_PATH, "w") as f:
         json.dump(data, f, indent=2)
-    print(f"wrote {OUT_PATH}: {data['total_contributions']} contributions, "
-          f"current streak {data['current_streak']['length']}, "
-          f"longest streak {data['longest_streak']['length']}")
+    print(
+        f"wrote {OUT_PATH}: {data['total_contributions']} contributions, "
+        f"current streak {data['current_streak']['length']}, "
+        f"longest streak {data['longest_streak']['length']} "
+        f"(date range: {data['range']['start']} -> {data['range']['end']})"
+    )
