@@ -1,4 +1,3 @@
-cat > README.md <<'EOF'
 <div align="center">
 
 <h3>
@@ -8,10 +7,10 @@ cat > README.md <<'EOF'
 <img
   src="./contrib-heatmap.svg"
   width="860"
-  alt="GitHub contribution activity heatmap"
+  alt="GitHub contribution activity"
 />
 
-<br><br>
+<br><br><br>
 
 <h3>
 <code>saathvik@github ~ $ whoami</code>
@@ -20,19 +19,19 @@ cat > README.md <<'EOF'
 <table>
 <tr>
 
-<td valign="top">
+<td width="50%" valign="top">
 <img
   src="./ascii-portrait.svg"
-  width="370"
-  alt="ASCII portrait of Saathvik Medavarapu"
+  width="100%"
+  alt="ASCII portrait"
 />
 </td>
 
-<td valign="top">
+<td width="50%" valign="top">
 <img
   src="./info-card.svg"
-  width="490"
-  alt="Developer information for Saathvik Medavarapu"
+  width="100%"
+  alt="Developer information"
 />
 </td>
 
@@ -41,17 +40,15 @@ cat > README.md <<'EOF'
 
 <br>
 
-<a href="https://github.com/saathvikmedavarapu2111-a11y">
-GitHub
-</a>
-&nbsp;•&nbsp;
-<a href="https://www.linkedin.com/in/medavarapu-saathvik-68a189381/">
-LinkedIn
-</a>
-&nbsp;•&nbsp;
-<a href="mailto:saathvikmedavarapu2111@gmail.com">
-Email
-</a>
+<code>saathvik@github ~ $ ls contact/</code>
 
+<br><br>
+
+<a href="https://github.com/saathvikmedavarapu2111-a11y"><code>GitHub</code></a>
+&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="https://www.linkedin.com/in/medavarapu-saathvik-68a189381/"><code>LinkedIn</code></a>
+&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="mailto:saathvikmedavarapu2111@gmail.com"><code>Email</code></a>
+
+<br><br>
 </div>
-EOF
